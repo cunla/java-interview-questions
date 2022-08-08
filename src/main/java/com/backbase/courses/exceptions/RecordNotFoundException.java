@@ -1,4 +1,4 @@
-package com.example.demo.persistence;
+package com.backbase.courses.exceptions;
 
 public class RecordNotFoundException extends Exception {
     public RecordNotFoundException(String msg) {
