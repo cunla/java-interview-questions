@@ -1,5 +1,4 @@
 package com.backbase.courses.services;
-import com.backbase.courses.CourseServiceTestConfiguration;
 import com.backbase.courses.entities.CourseEntity;
 import com.backbase.courses.entities.ParticipantEntity;
 import com.backbase.courses.exceptions.NotAllowedException;
@@ -10,10 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.annotation.Import;
@@ -34,24 +30,25 @@ public class CourseServiceTest {
     @MockBean
     private CourseRepository courseRepository;
 
-    @Before
-    public void setUp() {
-        CourseEntity course1 = new CourseEntity();
-        course1.setTitle("Course 1");
-        course1.setCapacity(10);
-        course1.setRemainingPlaces(10);
-        course1.setStartDate(Date.valueOf("2022-08-10"));
-        course1.setEndDate(Date.valueOf("2022-08-13"));
-        course1.setId(1L);
+    private CourseEntity availableCourse = new CourseEntity();
+    private CourseEntity fullCourse = new CourseEntity();
+    private ParticipantEntity participant = new ParticipantEntity();
 
-        ParticipantEntity participant = new ParticipantEntity();
+    @Before
+    public void setup() {
+        availableCourse.setTitle("Course 1");
+        availableCourse.setCapacity(10);
+        availableCourse.setRemainingPlaces(10);
+        availableCourse.setStartDate(Date.valueOf("2022-08-10"));
+        availableCourse.setEndDate(Date.valueOf("2022-08-13"));
+        availableCourse.setId(1L);
+
         participant.setName("Hamid");
         participant.setRegistrationDate(Date.valueOf("2022-08-05"));
         List<ParticipantEntity> participantList = new ArrayList<>();
         participantList.add(participant);
-        course1.setParticipants(participantList);
+        availableCourse.setParticipants(participantList);
 
-        CourseEntity fullCourse = new CourseEntity();
         fullCourse.setTitle("Full");
         fullCourse.setCapacity(20);
         fullCourse.setRemainingPlaces(0);
@@ -59,14 +56,10 @@ public class CourseServiceTest {
         fullCourse.setEndDate(Date.valueOf("2022-08-13"));
         fullCourse.setId(2L);
 
-        Mockito.when(courseRepository.findById(1L)).thenReturn(Optional.of(course1));
-        Mockito.when(courseRepository.findByTitleContains("Course")).thenReturn(List.of(course1));
-        Mockito.when(courseRepository.findById(2L)).thenReturn(Optional.of(fullCourse));
-        Mockito.when(courseRepository.save(Mockito.any())).thenAnswer(new Answer<>() {
-            public Object answer(InvocationOnMock invocation) {
-                return invocation.getArguments()[0];
-            }
-        });
+
+        Mockito.when(courseRepository.findById(1L)).thenReturn(Optional.of(availableCourse));
+        Mockito.when(courseRepository.findByTitleContains("Course")).thenReturn(List.of(availableCourse));
+        Mockito.when(courseRepository.save(Mockito.any())).thenAnswer(invocation -> invocation.getArguments()[0]);
     }
 
     @Test
@@ -167,11 +160,13 @@ public class CourseServiceTest {
     }
 
     @Test
-    public void given_participantAlreadyRegistered_when_enrollInCourse_then_notAllowedExceptionRaisedWithProperMessage() {
+    public void given_courseIsFull_when_enrollInCourse_then_notAllowedExceptionRaisedWithProperMessage() {
         long courseId = 2L;
         ParticipantEntity participant = new ParticipantEntity();
         participant.setName("Hamid");
         participant.setRegistrationDate(Date.valueOf("2022-08-02"));
+
+        Mockito.when(courseRepository.findById(2L)).thenReturn(Optional.of(fullCourse));
 
         try {
             courseService.enrollInCourse(courseId, participant);
@@ -180,6 +175,24 @@ public class CourseServiceTest {
             Assert.fail("Unwanted exception raised");
         } catch (NotAllowedException e) {
             Assert.assertTrue(e.getMessage().contains("the course is full"));
+        }
+    }
+
+    @Test
+    public void given_participantAlreadyRegistered_when_enrollInCourse_then_notAllowedExceptionRaisedWithProperMessage() {
+        ParticipantEntity participant = new ParticipantEntity();
+        participant.setName("Hamid");
+        participant.setRegistrationDate(Date.valueOf("2022-08-02"));
+
+        Mockito.when(courseRepository.findById(Mockito.any())).thenReturn(Optional.of(availableCourse));
+
+        try {
+            courseService.enrollInCourse(2L, participant);
+            Assert.fail("Exception expected");
+        } catch (RecordNotFoundException e) {
+            Assert.fail("Unwanted exception raised");
+        } catch (NotAllowedException e) {
+            Assert.assertTrue(e.getMessage().contains("is already registered in the course"));
         }
     }
 

@@ -1,8 +1,6 @@
 package com.backbase.courses.entities;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -36,17 +34,4 @@ public class CourseEntity {
     @Column(name="participants")
     @ElementCollection
     private List<ParticipantEntity> participants = new ArrayList<>();
-
-    @Override
-    public String toString() {
-        return "Course [" +
-                "id=" + id +
-                ", title=" + title +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", capacity=" + capacity +
-                ", remainingPlaces=" + remainingPlaces +
-                ", participants=" + participants +
-                "]";
-    }
 }

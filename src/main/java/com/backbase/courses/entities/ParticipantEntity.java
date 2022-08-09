@@ -12,16 +12,7 @@ import java.sql.Date;
 @Getter @Setter @NoArgsConstructor
 @Embeddable
 public class ParticipantEntity {
- 
     private String name;
     private Date registrationDate;
     private Date cancelDate;
-     
-    @Override
-    public String toString() {
-        return "Participant [" +
-                "name=" + name +
-                ", registrationDate=" + registrationDate +
-                ", cancelDate=" + cancelDate +
-                "]";
-    }}
+}
