@@ -25,12 +25,4 @@ public class DemoEntity {
      
     @Column(name="email", nullable=false, length=200)
     private String email;
-     
-    //Setters and getters
- 
-    @Override
-    public String toString() {
-        return "EmployeeEntity [id=" + id + ", firstName=" + firstName + 
-                ", lastName=" + lastName + ", email=" + email   + "]";
-    }
 }
