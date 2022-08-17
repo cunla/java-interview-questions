@@ -1,4 +1,4 @@
-package com.example.demo;
+package com.example.demo.controller;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class GreetingController {
+public class DemoController {
 
     @Value("${backbase.my_secret:no yaml}")
     private String secret;
@@ -20,6 +20,5 @@ public class GreetingController {
     public String greeting(@RequestParam(name = "name", required = false, defaultValue = "World") String name) {
         return "greeting " + name;
     }
-
 
 }

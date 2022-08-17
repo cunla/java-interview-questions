@@ -10,8 +10,8 @@ import javax.persistence.Table;
 
 @Data
 @Entity
-@Table(name="TBL_EMPLOYEES")
-public class EmployeeEntity {
+@Table(name="TBL_DEMO")
+public class DemoEntity {
  
     @Id
     @GeneratedValue
