@@ -1,5 +1,6 @@
 package com.example.demo.configuration;
 
+import feign.Contract;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -43,6 +44,11 @@ public class OkHttpFeignConfiguration {
                 .connectionPool(connectionPool)
                 .build();
         return this.okHttpClient;
+    }
+
+    @Bean
+    public Contract useFeignAnnotation() {
+        return new Contract.Default();
     }
 
     @PreDestroy

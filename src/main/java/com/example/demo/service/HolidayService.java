@@ -18,6 +18,6 @@ public class HolidayService {
     }
 
     public Response getHoliday(String country, String year, String month, String day) {
-        return holidayApiClient.getHolidays(country, apiKey, year, month, day, "true");
+        return holidayApiClient.getHolidays(country, apiKey, year, month, day);
     }
 }
