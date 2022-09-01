@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<configuration scan="true" scanPeriod="60 seconds" debug="false">
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>
+                %blue(%d{yyyy-MM-dd HH:mm:ss,SSS}) [%cyan(%t)] [%yellow(%c)]-[%highlight(%p)] %m%n
+            </pattern>
+        </encoder>
+    </appender>
+
+    <root>
+        <appender-ref ref="CONSOLE"/>
+    </root>
+
+</configuration>
