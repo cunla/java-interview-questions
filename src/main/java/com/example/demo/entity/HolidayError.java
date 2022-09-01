@@ -5,20 +5,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 
-import java.util.List;
-
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonPropertyOrder({
         "status",
-        "holidays"
+        "error"
 })
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Response {
+public class HolidayError {
 
     @JsonProperty("status")
     private Integer status;
-    @JsonProperty("holidays")
-    private List<Holiday> holidays = null;
+    @JsonProperty("error")
+    private String error;
 
     @JsonProperty("status")
     public Integer getStatus() {
@@ -30,13 +28,13 @@ public class Response {
         this.status = status;
     }
 
-    @JsonProperty("holidays")
-    public List<Holiday> getHolidays() {
-        return holidays;
+    @JsonProperty("error")
+    public String getError() {
+        return error;
     }
 
-    @JsonProperty("holidays")
-    public void setHolidays(List<Holiday> holidays) {
-        this.holidays = holidays;
+    @JsonProperty("error")
+    public void setError(String error) {
+        this.error = error;
     }
 }

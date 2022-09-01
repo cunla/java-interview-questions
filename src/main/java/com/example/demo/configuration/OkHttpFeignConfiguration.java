@@ -1,6 +1,8 @@
 package com.example.demo.configuration;
 
+import com.example.demo.client.FeignErrorDecoder;
 import feign.Contract;
+import feign.codec.ErrorDecoder;
 import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -27,8 +29,8 @@ public class OkHttpFeignConfiguration {
     @ConditionalOnMissingBean({ConnectionPool.class})
     public ConnectionPool httpClientConnectionPool(FeignHttpClientProperties httpClientProperties,
                                                    OkHttpClientConnectionPoolFactory connectionPoolFactory) {
-        Integer maxTotalConnections = httpClientProperties.getMaxConnections();
-        Long timeToLive = httpClientProperties.getTimeToLive();
+        int maxTotalConnections = httpClientProperties.getMaxConnections();
+        long timeToLive = httpClientProperties.getTimeToLive();
         TimeUnit ttlUnit = httpClientProperties.getTimeToLiveUnit();
         return connectionPoolFactory.create(maxTotalConnections, timeToLive, ttlUnit);
     }
@@ -36,10 +38,10 @@ public class OkHttpFeignConfiguration {
     @Bean
     public OkHttpClient client(OkHttpClientFactory httpClientFactory, ConnectionPool connectionPool,
                                FeignHttpClientProperties httpClientProperties) {
-        Boolean followRedirects = httpClientProperties.isFollowRedirects();
-        Integer connectTimeout = httpClientProperties.getConnectionTimeout();
-        this.okHttpClient = httpClientFactory.createBuilder(httpClientProperties.isDisableSslValidation())
-                .connectTimeout((long) connectTimeout, TimeUnit.MILLISECONDS)
+        boolean followRedirects = httpClientProperties.isFollowRedirects();
+        int connectTimeout = httpClientProperties.getConnectionTimeout();
+        this.okHttpClient = httpClientFactory.createBuilder(false)
+                .connectTimeout(connectTimeout, TimeUnit.MILLISECONDS)
                 .followRedirects(followRedirects)
                 .connectionPool(connectionPool)
                 .build();
@@ -49,6 +51,11 @@ public class OkHttpFeignConfiguration {
     @Bean
     public Contract useFeignAnnotation() {
         return new Contract.Default();
+    }
+
+    @Bean
+    public ErrorDecoder errorDecoder(){
+        return new FeignErrorDecoder();
     }
 
     @PreDestroy
