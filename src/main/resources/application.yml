@@ -6,11 +6,8 @@ spring:
     type: simple
 
 feign:
-  client:
-    config:
-      default:
-        connectTimeout: 5000
-        readTimeout: 5000
-        loggerLevel: full
   okhttp:
     enabled: true
+  httpclient:
+    connection-timeout: 5000
+

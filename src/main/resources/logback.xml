@@ -9,7 +9,7 @@
         </encoder>
     </appender>
 
-    <root>
+    <root level="DEBUG">
         <appender-ref ref="CONSOLE"/>
     </root>
 

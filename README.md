@@ -9,7 +9,7 @@ A service will return the nearest holiday info by given date.
 
 ## How to run
 
-Compile and build.
+Compile and build. Need to import holiday.com api's cert into Java truststore.
 
 ```sh
 mvn compile build docker plugin
