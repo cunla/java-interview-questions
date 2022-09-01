@@ -24,9 +24,6 @@ public class HolidayService {
 
     @Cacheable(value = CACHE_NAME, key = "{#country, #year,#month, #day}")
     public Response getHoliday(String country, String year, String month, String day) {
-        if (!country.equals("US")) {
-            throw new IllegalArgumentException("Currently only supported US country, please use US !");
-        }
         return holidayApiClient.getHolidays(country, apiKey, year, month, day);
     }
 }

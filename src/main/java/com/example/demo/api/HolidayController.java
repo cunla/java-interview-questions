@@ -26,9 +26,16 @@ public class HolidayController {
     @Autowired
     HolidayResponseMapper mapper;
 
+    /**
+     *
+     * @param date due to Holiday API free account only allow search 2021, so the default value is 2021.
+     * @param country must from https:\/\/holidayapi.com\/docs
+     * @return nearest holiday, if more than 1 will only return the top 1 (order by alphabet).
+     */
     @GetMapping("/holiday")
     @ResponseBody
-    public ResponseEntity<NearestHoliday> getNearestHoliday(@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
+    public ResponseEntity<NearestHoliday> getNearestHoliday(@RequestParam(required = false,
+            defaultValue = "#{T(java.time.LocalDate).now().minusYears(1)}") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date,
                                                             @RequestParam String country) {
         Response response = holidayService.getHoliday(country, String.valueOf(date.getYear()),
                 String.valueOf(date.getMonthValue()),

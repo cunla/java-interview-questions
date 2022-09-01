@@ -1,6 +1,7 @@
 package com.example.demo.client;
 
 import com.example.demo.entity.HolidayError;
+import com.example.demo.exception.HolidayApiException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import feign.Response;
 import feign.codec.ErrorDecoder;
@@ -10,7 +11,6 @@ import java.io.InputStream;
 
 @Slf4j
 public class FeignErrorDecoder implements ErrorDecoder {
-    private final ErrorDecoder errorDecoder = new Default();
     private final ObjectMapper mapper = new ObjectMapper();
 
     @Override
@@ -19,9 +19,9 @@ public class FeignErrorDecoder implements ErrorDecoder {
         try (InputStream inputStream = response.body().asInputStream()) {
             message = mapper.readValue(inputStream, HolidayError.class);
             log.error("status is {} and error message is {} ", message.getStatus(), message.getError());
+            return new HolidayApiException(message);
         } catch (Exception e) {
             return new Exception(e);
         }
-        return errorDecoder.decode(s, response);
     }
 }
