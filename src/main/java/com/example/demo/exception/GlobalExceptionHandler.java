@@ -13,24 +13,17 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import java.util.Objects;
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
-    private final String VALIDATION_ERROR_MESSAGE = "parameter is invalid, date format must be yyyy-MM-dd !";
+    private final static String VALIDATION_ERROR_MESSAGE = "parameter is invalid. Date must be yyyy-MM-dd format !";
+    private final static String VALIDATION_MISSING_ERROR_MESSAGE = "parameter is missing. Country must be entered !";
 
     @ExceptionHandler(HolidayApiException.class)
     protected ResponseEntity<HolidayError> handleApiException(HolidayApiException exception) {
         return ResponseEntity.status(exception.getError().getStatus()).body(exception.getError());
-    }
-
-    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
-    protected ResponseEntity<Object> handleMethodArgumentException(MethodArgumentTypeMismatchException ex) {
-        ValidationExceptionMessage message = new ValidationExceptionMessage(
-                ex.getParameter().getParameterName(),
-                ex.getValue().toString(),
-                VALIDATION_ERROR_MESSAGE
-        );
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
     @Override
@@ -41,9 +34,19 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
         ValidationExceptionMessage message = new ValidationExceptionMessage(
                 ex.getParameterName(),
                 ex.getParameterType(),
-                VALIDATION_ERROR_MESSAGE
+                VALIDATION_MISSING_ERROR_MESSAGE
         );
         return ResponseEntity.status(status).body(message);
+    }
+
+    @ExceptionHandler({MethodArgumentTypeMismatchException.class})
+    protected ResponseEntity<Object> handleMethodArgumentException(MethodArgumentTypeMismatchException ex) {
+        ValidationExceptionMessage message = new ValidationExceptionMessage(
+                ex.getParameter().getParameterName(),
+                Objects.requireNonNull(ex.getValue()).toString(),
+                VALIDATION_ERROR_MESSAGE
+        );
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
 
     @Getter
