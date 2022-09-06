@@ -1,0 +1,21 @@
+server:
+  port: 50000
+
+spring:
+  cache:
+    type: simple
+
+base:
+  url: http://localhost:8080
+
+backbase:
+  holiday:
+    api:
+      key: security
+
+
+feign:
+  okhttp:
+    enabled: true
+  httpclient:
+    connection-timeout: 5000

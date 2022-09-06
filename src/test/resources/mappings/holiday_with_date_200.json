@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v1/holidays?country=US&key=security&year=2021&month=10&day=15&upcoming=true"
+  },
+  "response": {
+    "status": 201,
+    "body": "{\n  \"status\": 200,\n  \"requests\": {\n    \"used\": 12,\n    \"available\": 9988,\n    \"resets\": \"2022-10-01 00:00:00\"\n  },\n  \"holidays\": [\n    {\n      \"name\": \"New Year's Eve\",\n      \"date\": \"2021-12-31\",\n      \"observed\": \"2021-12-31\",\n      \"public\": false,\n      \"country\": \"US\",\n      \"uuid\": \"6a153f07-0520-45be-83cd-ed6b6d743df0\",\n      \"weekday\": {\n        \"date\": {\n          \"name\": \"Friday\",\n          \"numeric\": \"5\"\n        },\n        \"observed\": {\n          \"name\": \"Friday\",\n          \"numeric\": \"5\"\n        }\n      }\n    }\n  ]\n}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

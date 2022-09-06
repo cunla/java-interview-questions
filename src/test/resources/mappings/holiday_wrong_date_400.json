@@ -1,0 +1,13 @@
+{
+  "request": {
+    "method": "GET",
+    "url": "/v1/holidays?country=US&key=security&year=2021&month=111&day=222&upcoming=true"
+  },
+  "response": {
+    "status": 400,
+    "body": "{\n    \"status\": 400,\n    \"requests\": {\n        \"used\": 41,\n        \"available\": 9959,\n        \"resets\": \"2022-10-01 00:00:00\"\n    },\n    \"error\": \"The requested date (2021-112-01) is invalid. For more information, please visit https:\\/\\/holidayapi.com\\/docs\"\n}",
+    "headers": {
+      "Content-Type": "application/json"
+    }
+  }
+}

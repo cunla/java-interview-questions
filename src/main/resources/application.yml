@@ -1,6 +1,10 @@
 server:
   port: 50000
 
+
+base:
+  url: https://holidayapi.com
+
 spring:
   cache:
     type: simple
@@ -10,7 +14,6 @@ feign:
     enabled: true
   httpclient:
     connection-timeout: 5000
-
 
 management:
   health:
